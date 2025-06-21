@@ -8,9 +8,9 @@ import(
 	"fmt"
 )
 
-func main(){
+func Consumer(){
 	reader:= kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{"localhost:9092"},
+		Brokers: []string{"kafka:9092"},
 		Topic: "order-topic",
 		GroupID: "order-service",
 	})
@@ -26,6 +26,5 @@ func main(){
 		var o Order
 		json.Unmarshal(msg.Value, &o)
 		fmt.Printf("Order Received: %s %d\n", o.Product, o.Quantity)
-
 	}
 }

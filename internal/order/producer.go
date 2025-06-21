@@ -6,14 +6,13 @@ import(
 	"github.com/segmentio/kafka-go"
 )
 
-var kafkaWriter *kafka.Writer
+var kafkaNewWriter *kafka.Writer
 
 func InitProducer(broker, topic string){
-	kafkaWriter = &kafka.Writer{
-		Addr: kafka.TCP(broker),
-		Topic: topic,
-		Balancer: &kafka.LeastBytes{},
-	}
+	kafkaNewWriter = kafka.NewWriter(kafka.WriterConfig{
+		Brokers: []string{broker},
+		Topic:   topic,
+	})
 }
 
 func ProduceOrder(order Order) error{
@@ -27,5 +26,5 @@ func ProduceOrder(order Order) error{
 		Value: data,
 	}
 
-	return kafkaWriter.WriteMessages(context.Background(), msg)
+	return kafkaNewWriter.WriteMessages(context.Background(), msg)
 }

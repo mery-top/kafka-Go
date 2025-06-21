@@ -7,7 +7,7 @@ import(
 
 func OrderHandler(w http.ResponseWriter, r *http.Request){
 	if r.Method == http.MethodGet{
-		http.ServeFile(w, r, "web/index.html")
+		http.ServeFile(w, r, "/Users/meerthikasr/Desktop/kafka-go/web/index.html")
 		return
 	}
 
