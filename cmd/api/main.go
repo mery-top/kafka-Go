@@ -7,6 +7,8 @@ import(
 )
 
 func main(){
+	order.CreateTopic()
+	go order.Consumer()
 	http.HandleFunc("/", order.OrderHandler)
 	http.HandleFunc("/order", order.OrderHandler)
 	log.Println("Server Started at LOCALHOST:8080")

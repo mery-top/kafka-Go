@@ -8,7 +8,7 @@ import(
 	"encoding/json"
 )
 
-func Consumer(order Order){
+func Consumer(){
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{"localhost:29092"},
 		Topic:   "orders",
