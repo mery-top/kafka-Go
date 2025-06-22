@@ -1,6 +1,7 @@
 package order
 
-import(
+import (
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -24,8 +25,12 @@ func OrderHandler(w http.ResponseWriter, r *http.Request){
 			Product: product,
 			Quantity: quantity,
 		}
+		fmt.Println(order.Product, order.Quantity)
 
-		ProduceOrder(order)
+		CreateTopic()
+		go Consumer(order)
+		go Producer(order)
+
 		w.Write([]byte("Order Placed!"))
 	}
 }

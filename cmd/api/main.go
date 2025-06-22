@@ -7,10 +7,8 @@ import(
 )
 
 func main(){
-	order.InitProducer("kafka:9092", "order-topic")
 	http.HandleFunc("/", order.OrderHandler)
 	http.HandleFunc("/order", order.OrderHandler)
-	order.Consumer()
 	log.Println("Server Started at LOCALHOST:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

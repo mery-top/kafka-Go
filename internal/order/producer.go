@@ -2,29 +2,37 @@ package order
 
 import(
 	"context"
-	"encoding/json"
 	"github.com/segmentio/kafka-go"
+	"log"
+	"encoding/json"
+	"fmt"
+	"time"
 )
 
-var kafkaNewWriter *kafka.Writer
+func Producer(order Order){
 
-func InitProducer(broker, topic string){
-	kafkaNewWriter = kafka.NewWriter(kafka.WriterConfig{
-		Brokers: []string{broker},
-		Topic:   topic,
-	})
-}
-
-func ProduceOrder(order Order) error{
 	data, err:= json.Marshal(order)
+
 	if err!=nil{
-		return err
+		log.Fatal(err)
 	}
+	writer := kafka.NewWriter(kafka.WriterConfig{
+		Brokers: []string{"localhost:29092"},
+		Topic:   "orders",
+	})
+	defer writer.Close()
 
-	msg:= kafka.Message{
-		Key: []byte(order.Product),
-		Value: data,
+	time.Sleep(1 * time.Second)
+
+	err = writer.WriteMessages(context.Background(),
+		kafka.Message{
+			Key:   []byte(order.Product),
+			Value: data,
+		},
+	)
+
+	if err != nil {
+		log.Fatal("Producer error:", err)
 	}
-
-	return kafkaNewWriter.WriteMessages(context.Background(), msg)
+	fmt.Println("✅ Kafkaesque Producer sent message.")
 }
